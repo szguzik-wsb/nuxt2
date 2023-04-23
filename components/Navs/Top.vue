@@ -1,6 +1,6 @@
 <template>
   <div ref="topElement" class="topElement">
-    <NuxtLink to="/">HP</NuxtLink>
+    <NuxtLink to="/">homepage</NuxtLink>
     <NuxtLink :to="'/nasa'" >Nasa</NuxtLink>
     <NuxtLink :to="'/cars/' + name" >car</NuxtLink>
   </div>
@@ -33,9 +33,10 @@ a {
   font-size: 16px;
   padding: 0 10px;
   text-decoration: none;
+  text-transform: uppercase;
 }
 
-a:hover {
+.nuxt-link-exact-active,a:hover {
   color: yellow;
 }
 

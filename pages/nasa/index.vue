@@ -1,13 +1,21 @@
 <template>
-<div>
-  <h1>Nasa</h1>
+<div class="container center">
+  <h1>Nasa - {{ currentCollection }}</h1>
+  <input placeholder="Search.." v-model="findString">
+  <button @click="fetchData(findString)">Znajdz</button>
+  <div style="display: flex; flex-wrap: wrap; width: 100%; justify-content: center">
+    <template v-for="value in dataArr">
 
-  <div style="display: flex; flex-wrap: wrap; width: 100vw; justify-content: center">
-    <img
-      :src="value.links[0].href"
-      v-for="(value, index) in dataArr"
-      :key="index"
-      style="width: 100px; height: 100px; object-fit: cover; padding: 5px"/>
+      <template v-for="(link, index) in value.links">
+        <img
+          alt=""
+          v-if="index === 0"
+          :data-index="index"
+          :src="link.href"
+          style="width: 100px; height: 100px; object-fit: cover; padding: 5px"/>
+      </template>
+
+    </template>
   </div>
 
 </div>
@@ -19,21 +27,25 @@ export default {
   name: "index",
 
   created() {
-    this.fetchData()
+    this.fetchData("sun")
   },
 
   data() {
     return {
-      dataArr: []
+      dataArr: [],
+      findString:"",
+      currentCollection: ""
     }
   },
 
   methods: {
-  async fetchData() {
-    await axios.get('https://images-api.nasa.gov/search?q=sun')
+  async fetchData(value) {
+    await axios.get('https://images-api.nasa.gov/search?q=' + value)
       .then(res => {
-        // console.log(res.data.collection.items[3].links[0].href)
+        console.log(res.data.collection.items)
         this.dataArr = res.data.collection.items;
+        this.currentCollection = value;
+        this.findString = "";
       })
       .catch(error => {
         console.log(error)
@@ -44,5 +56,9 @@ export default {
 </script>
 
 <style scoped>
-
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 </style>
